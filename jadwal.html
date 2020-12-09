@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <title>Judul</title>
+    </head>
+    <body>
+        <h4 id="clock"></h4>
+        <div id="judul"></div>
+        <div id="prihal"></div>
+    </body>
+    <script>
+        var jadwal = [
+            {tipe: 'Subuh', waktu: '04:26'},
+            {tipe: 'Terbit', waktu: '05:43'},
+            {tipe: 'Dzuhur', waktu: '12.01'},
+            {tipe: 'Asar', waktu: '14:57'},
+            {tipe: 'Maghrib', waktu: '17:49'},
+            {tipe: 'Isya', waktu: '18:58'},
+            {tipe: 'makan', waktu: '16:32'},
+        ]
+
+        function reClock(){
+            var time = new Date();
+            var hour = time.getHours();
+            var min = time.getMinutes();
+            var sec = time.getSeconds();
+            var day = "";
+            var lmt = `${hour}${min}${sec}`;
+            var day = parseInt(lmt) < 120000 ? 'AM' : 'PM';
+            hour = setFormat(hour);
+            min = setFormat(min);
+            sec = setFormat(sec);
+            var clock = `${hour}:${min}:${sec} ${day}`
+            document.getElementById('clock').innerHTML = clock;
+            var selected = jadwal.filter(item => item.waktu == `${hour}:${min}`)
+            if(selected.length > 0){
+                document.getElementById('judul').innerHTML = `Sudah masuk waktu ${selected[0].tipe}`;
+                document.getElementById('prihal').innerHTML = 'Solat dulu yuk!';
+                resetAlert();
+            }
+            setTimeout(reClock, 1000);
+        }
+
+        function setFormat(k){
+            if(k < 10){
+                return '0'+ k
+            }else{
+                return k
+            }
+        }
+
+        function resetAlert(){
+            setTimeout(() => {
+                document.getElementById('judul').innerHTML = '';
+                document.getElementById('prihal').innerHTML = '';
+            }, 60000);
+        }
+        reClock();
+    </script>
+</html>
